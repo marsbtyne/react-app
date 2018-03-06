@@ -1,3 +1,4 @@
+/*global document, window, alert, console, require*/
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
@@ -16,9 +17,13 @@ import registerServiceWorker from './registerServiceWorker';
 //   rawFile.send(null);
 // }
 
-let person ={ 
-};
-let personArray=[];
+function Person(firstName, lastName, age, state) {
+	this.firstName = firstName;
+	this.lastName = lastName;
+	this.age = age;
+	this.state = state;
+}
+
 
 function loadFile(e) {
 	let file = e.target.files[0];
@@ -33,31 +38,48 @@ function loadFile(e) {
 	reader.readAsText(file);
 }
 
-function displayContents(contents){
-	let element = document.getElementById('file-content');
-	//let allLines = contents.split(/\r\n|n/);
+function createPeople(contents){
+	let people =[];
+	
 	let lines = contents.split('\n');
 	let firstLine = lines[0].split(',');
-	let firstName = firstLine[0];
-	let lastName = firstLine[1];
-	let age = firstLine[2];
-	let state = firstLine[3];
-	let people =[];
+	let person = {
+		firstName: '',
+		lastName: '',
+		age: 0,
+		state: ''
+	}
 
 	for (let personIndex = 1; personIndex < lines.length-1; personIndex++){
 		let line = lines[personIndex];
-		personArray = line.split(',');
-		person[firstName] = personArray[0];
+		let personArray = line.split(',');
+		let person = new Person(personArray[0], personArray[1], personArray[2], personArray[3]);
 		people.push(person);
 	}
-	// lines.forEach (function(line){
-	// 	person = line.split(',');
-	// 	people.push(person);
-	// });
-	
+	return people;
+}
 
-	//let firstName = entries
-	element.innerHTML = people[0][firstName];
+// function sortPeople(people) {
+// 	let over30 = people.filter(person => person[age] >= 30);
+// 	let under30 = people.filter(person => person[age] < 30);
+// }
+
+function displayContents(contents){
+	let element = document.getElementById('file-content');
+	let people = createPeople(contents);
+	//element.innerHTML = people[0].firstName;
+
+	let over30element = document.getElementById('over-30');
+
+	let over30 = people.filter(person => person.age >= 30);
+	let under30 = people.filter(person => person.age < 30);
+
+	over30.forEach(function(person){
+	let elem = document.createElement('div');
+	let p = "Document: " + person.firstName + ",";
+	elem.innerHTML = p;
+	element.appendChild(elem);
+	});
 }
 
 

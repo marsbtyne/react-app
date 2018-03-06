@@ -1,3 +1,4 @@
+/*global document, window, alert, console, require*/
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
@@ -16,7 +17,8 @@ class App extends Component {
         </p>
         
         <input type="file" id="file-input" />
-        <div id="file-content"></div>
+        <div id="file-content"><div id="over-30"><h2>People Over 30</h2>
+        </div></div>
 
 
         
