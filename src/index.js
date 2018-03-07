@@ -44,51 +44,58 @@ function createPeople(contents){
 
 		let person = new Person(firstName, lastName, age, state);
 		
+		// Separates people into 2 lists based on age
 		person.isOver30 ? addPersonToState(person, statesOver30) : 
 			addPersonToState(person, statesUnder30)
 		}
 	return [statesUnder30, statesOver30];
 }
 
+// Updates the population of the given state with the new person
 function addPersonToState(person, states){
+	// If the state is not already in the map, add it and map it to the person
 	if (!(states.has(person.state))){
 		let p = [person];
 		states.set(person.state, p)
 	}
+	// if the state is in the map, add the person to the population list
 	else {
 		states.get(person.state).push(person);
 		}
 	return states;
 }
 
-function displayPeople(value,key,map) {
-	let stateList = document.getElementById('file-content');
+// Takes in the map of state populations for people under 30 and adds population to the page
+function appendPeopleUnder30(value,key,map) {
+	let under30Element = document.getElementById('under-30');
+	under30Element.appendChild(appendPeopleHelper(value, key));
+}
 
-	let elem = document.createElement('div');
-	elem.innerHTML = "<h2>State: " + key + "</h2>"
+// Takes in the map of state populations for people over 30 and adds population to the page
+function appendPeopleOver30(value, key, map) {
+	let over30Element = document.getElementById('over-30');
+	over30Element.appendChild(appendPeopleHelper(value, key));
+}
+
+// Helper function that iterates through the current state and adds each person
+function appendPeopleHelper(value, key){
+  let elem = document.createElement('div');
+	elem.innerHTML = "<h3>State: " + key + "</h3>"
 	value.forEach(function(person) {
 		let personElem = document.createElement('span');
 		personElem.innerHTML = "Document: " + person.firstName + " " + person.lastName + ", " + person.state + ", " + person.age + "<br>";
 		elem.appendChild(personElem);
 	});
-	stateList.appendChild(elem);
+  return elem;
 }
 
+// Divides people into 2 lists and uses those to iterate through and display on page
 function displayContents(contents){
-	let element = document.getElementById('file-content');
-
-	let under30Element = document.createElement('div');
-	under30Element.innerHTML = "<h1>People Under 30</h1>";
-	let over30Element = document.createElement('div');
-	over30Element.innerHTML = "<h1>People Over 30</h1>";
 	let under30 = createPeople(contents)[0];
 	let over30 = createPeople(contents)[1];
 
-	element.appendChild(under30Element);
-	under30.forEach(displayPeople);
-
-	element.appendChild(over30Element);
-	over30.forEach(displayPeople);
+	under30.forEach(appendPeopleUnder30);
+	over30.forEach(appendPeopleOver30);
 }
 
 
