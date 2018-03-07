@@ -8,20 +8,12 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Hello world!</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-        
-        <input type="file" id="file-input" />
-        <div id="file-content"><div id="over-30"><h2>People Over 30</h2>
-        </div></div>
-
 
         
+        <label className="custom-file-upload btn btn-default btn-lg"><input type="file" size ="200" id="file-input" />Upload a CSV file
+        </label>
+        <div id="file-content">
+        </div>
       </div>
     );
   }
